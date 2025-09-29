@@ -60,7 +60,7 @@ describe "Peso y exceso de peso2" {
 
 describe "El de nivel" {
   method initialize() {
-    bumblebee.esAuto(true)
+    bumblebee.forma(bumblebeeAuto)
     camion.cargar(bumblebee)
     bateriaAntiaerea.estaConMisiles(false)
     camion.cargar(bateriaAntiaerea)
@@ -71,7 +71,7 @@ describe "El de nivel" {
     assert.equals(bumblebee, camion.hayDeNivel(15))
     assert.equals(residuosRadioactivos, camion.hayDeNivel(200)) 
     assert.throwsException({camion.hayDeNivel(30)})
-    bumblebee.esAuto(false)
+    bumblebee.forma(bumblebeeRobot)
     assert.equals(bumblebee, camion.hayDeNivel(30))
     bateriaAntiaerea.estaConMisiles(true)
     assert.equals(bateriaAntiaerea, camion.hayDeNivel(100))
@@ -97,7 +97,7 @@ describe "Cosas Peligrosas" {
 
 describe "Puede circular en ruta" {
   method initialize() {
-    bumblebee.esAuto(true)
+    bumblebee.forma(bumblebeeAuto)
     camion.cargar(bumblebee)
     paqueteDeLadrillos.cantidad(300)
     camion.cargar(paqueteDeLadrillos)
@@ -106,7 +106,7 @@ describe "Puede circular en ruta" {
     assert.that(camion.puedoCircularEnRuta(20))
     paqueteDeLadrillos.cantidad(400)
     assert.notThat(camion.puedoCircularEnRuta(20))
-    bumblebee.esAuto(false)
+    bumblebee.forma(bumblebeeRobot)
     paqueteDeLadrillos.cantidad(300)
     assert.notThat(camion.puedoCircularEnRuta(20))
   }
@@ -125,7 +125,7 @@ describe "Mas cosas" {
     assert.equals(500, embalajeDeSeguridad.peso())
     assert.equals(5, embalajeDeSeguridad.nivelPeligrosidad())
     embalajeDeSeguridad.cosaAdentro(bumblebee)
-    bumblebee.esAuto(true)
+    bumblebee.forma(bumblebeeAuto)
     assert.equals(800, embalajeDeSeguridad.peso())
     assert.equals(7.5, embalajeDeSeguridad.nivelPeligrosidad())
   }
@@ -212,7 +212,7 @@ describe "Accidente" {
   method initialize () {
     camion.cargar(contenedorPortuario)
     contenedorPortuario.agregarCosa(bumblebee)
-    bumblebee.esAuto(true)
+    bumblebee.forma(bumblebeeAuto)
     contenedorPortuario.agregarCosa(knightRider)
     camion.cargar(embalajeDeSeguridad)
     embalajeDeSeguridad.cosaAdentro(residuosRadioactivos)
@@ -226,7 +226,7 @@ describe "Accidente" {
   }
   test "caso 1" {
     camion.accidente()
-    assert.notThat(bumblebee.esAuto())
+    assert.equals(bumblebeeAuto, bumblebee.forma)
     assert.equals(88, paqueteDeLadrillos.cantidad())
     assert.equals(70, arenaAGranel.peso())
     //assert.equals(45, residuosRadioactivos.peso()) //esto no sufre cambios poque esta adentro del embalaje
@@ -236,7 +236,7 @@ describe "Accidente" {
 
 describe "Accidente 2" {
   method initialize () {
-    bumblebee.esAuto(false)
+    bumblebee.forma(bumblebeeRobot)
     camion.cargar(bumblebee)
     camion.cargar(paqueteDeLadrillos)
     paqueteDeLadrillos.cantidad(10)
@@ -247,7 +247,7 @@ describe "Accidente 2" {
   }
   test "caso 2" {
     camion.accidente()
-    assert.that(bumblebee.esAuto())
+    assert.equals(bumblebeeAuto, bumblebee.forma)
     assert.equals(0, paqueteDeLadrillos.cantidad())
     assert.equals(45, residuosRadioactivos.peso())
     assert.notThat(bateriaAntiaerea.estaConMisiles())
@@ -259,7 +259,7 @@ describe "Transporte 1" {
     almacen.almacenar(knightRider)
     almacen.almacenar(residuosRadioactivos)
     camion.cargar(bumblebee)
-    bumblebee.esAuto(true)
+    bumblebee.forma(bumblebeeAuto)
     camion.cargar(arenaAGranel)
     arenaAGranel.peso(50)
   }
@@ -270,7 +270,7 @@ describe "Transporte 1" {
   }
 
   test "Caso: ruta 9 fallido por peligrosidad" {
-    bumblebee.esAuto(false) 
+    bumblebee.forma(bumblebeeRobot)
     assert.throwsException({camion.transportar(almacen, ruta9) })
     assert.equals(#{knightRider, residuosRadioactivos}, almacen.cosas())
     assert.equals(#{bumblebee, arenaAGranel}, camion.cosas())

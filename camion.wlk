@@ -26,7 +26,7 @@ object camion {
 	}
 
 	method todoElPesoEsPar() {
-		return cosas.all{unaCosa => unaCosa.peso() % 2 == 0}
+		return cosas.all{unaCosa => unaCosa.peso().even()}
 	}
 
 	method hayAlgoQuePesa(cantidad) {
@@ -34,7 +34,7 @@ object camion {
 	}
 
 	method pesoTotal() {
-		return tara + cosas.map({unaCosa => unaCosa.peso()}).sum()
+		return tara + self.pesoDeLasCosas().sum()
 	}
 
 	method enExcesoDePeso() {
@@ -63,17 +63,16 @@ object camion {
 	}
 
 	method tienAlgoQuePesaEntre(valorMin, valorMax) {
-		return cosas.any{unaCosa => unaCosa.nivelPeligrosidad() > valorMin 
-				&& unaCosa.nivelPeligrosidad() < valorMax }
+		return cosas.any{unaCosa => unaCosa.peso().between(valorMin, valorMax)}
 	}
 
 	method cosaMasPesada() {
 		self.validarCamionLleno()
-		return cosas.max({unaCosa => unaCosa.peso()})
+		return cosas.max({self.pesoDeLasCosas()})
 	}
 
 	method validarCamionLleno() {
-		if (camion.cosas().isEmpty())
+		if (self.cosas().isEmpty())
 			{self.error("No hay cosas en el camion")}
 	}
 

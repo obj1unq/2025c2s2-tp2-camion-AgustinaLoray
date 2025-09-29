@@ -14,19 +14,31 @@ object arenaAGranel {
 
 object bumblebee {
 	method peso() { return 800 }
-	var property esAuto = false 
+	var property forma = bumblebeeAuto
+
 	method nivelPeligrosidad() { 
-		if (esAuto)
-			{return 15}
-		else 
-			{return 30}
+		return forma.nivelPeligrosidad()
 	}
+	
 	method bultosUsados() {return 2}
+
 	method sufrirAccidente() { 
-		if (esAuto)
-			{esAuto=false}
-		else {esAuto=true}
-	 }
+    forma = forma.otroModo()
+}
+}
+
+object bumblebeeAuto {
+	method peso() { return 800 }
+    method nivelPeligrosidad() { return 15 }
+	method otroModo() { return bumblebeeRobot }
+  
+}
+
+object bumblebeeRobot {
+    method peso() { return 800 }
+    method nivelPeligrosidad() { return 30 }
+	method otroModo() { return bumblebeeAuto }
+
 }
 
 object paqueteDeLadrillos {
@@ -50,7 +62,7 @@ object paqueteDeLadrillos {
 }
 
 object bateriaAntiaerea {
-	var property estaConMisiles = null
+	var property estaConMisiles = true
 	method peso() { 
 		if (estaConMisiles)
 			{return 300}
